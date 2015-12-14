@@ -4,6 +4,11 @@
       "id": "CURSOR",
       "type": "texture",
       "src": "../engine basics/cursor.png"
+    },
+    {
+      "id": "PASSENGER",
+      "type": "texture",
+      "src": "PASSENGER.png"
     }
   ]
 }

@@ -67,12 +67,13 @@ MY_Scene::MY_Scene(Game * _game) :
 	baseShader->compileShader();
 
 	textShader->textComponent->setColor(glm::vec3(0.0f, 0.0f, 0.0f));
-
+	//screenSurface->unload();
+	//screenSurface->load();
 
 	// remove initial camera
-	childTransform->removeChild(cameras.at(0)->parents.at(0));
-	delete cameras.at(0)->parents.at(0);
-	cameras.pop_back();
+	//childTransform->removeChild(cameras.at(0)->parents.at(0));
+	//delete cameras.at(0)->parents.at(0);
+	//cameras.pop_back();
 
 	//Set up debug camera
 	debugCam = new MousePerspectiveCamera();
@@ -80,10 +81,12 @@ MY_Scene::MY_Scene(Game * _game) :
 	childTransform->addChild(debugCam);
 	debugCam->farClip = 1000.f;
 	debugCam->childTransform->rotate(90, 0, 1, 0, kWORLD);
-	debugCam->parents.at(0)->translate(5.0f, 1.5f, 22.5f);
-	debugCam->yaw = 90.0f;
+	debugCam->parents.at(0)->translate(1.475f, 9.508f, 4.506f);
+	debugCam->yaw = -90.0f;
 	debugCam->pitch = -10.0f;
 	debugCam->speed = 1;
+
+	debugCam->interpolation = 1;
 
 	activeCamera = debugCam;
 
@@ -99,6 +102,12 @@ MY_Scene::MY_Scene(Game * _game) :
 	MeshEntity* bus = new MeshEntity(Resource::loadMeshFromObj("assets/bus.obj").at(0), baseShader);
 	childTransform->addChild(bus);
 	bus->mesh->pushTexture2D(MY_ResourceManager::scenario->getTexture("DEFAULT")->texture);
+
+	MeshEntity* passenger = new MeshEntity(MeshFactory::getPlaneMesh(8), baseShader);
+	childTransform->addChild(passenger);
+	passenger->mesh->pushTexture2D(MY_ResourceManager::scenario->getTexture("PASSENGER")->texture);
+	passenger->childTransform->translate(-9.5,4.4f,7.1f);
+	passenger->childTransform->rotate(90, 0, 1, 0, kWORLD);
 }
 
 MY_Scene::~MY_Scene(){
@@ -122,8 +131,12 @@ void MY_Scene::update(Step * _step){
 		game->toggleFullScreen();
 	}
 
-	if(keyboard->keyJustDown(GLFW_KEY_1)){
+	if (keyboard->keyJustDown(GLFW_KEY_1)){
 		cycleCamera();
+	}
+
+	if (keyboard->keyJustDown(GLFW_KEY_2)){
+		Transform::drawTransforms = !Transform::drawTransforms;
 	}
 
 	float speed = 1;
