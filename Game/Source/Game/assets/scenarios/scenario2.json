@@ -1,0 +1,63 @@
+{
+  "assets": [],
+  "characters": [],
+  "conversations": [
+    {
+      "id": "intro",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "Hey, can you pull over for a bit?"
+          ]
+        }
+      ],
+      "options": [
+      {
+        "text": "yes",
+        "link": "nice"
+      },
+      {
+        "text": "no",
+        "link": "mean"
+      }
+      ]
+    },
+    {
+      "id": "nice",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "Thanks.",
+			  "My heart is racing something fierce.",
+			  "It'll pass soon.",
+			  "...",
+			  "...",
+			  "I don't think stopping the car helps, but...",
+			  "Gives me a chance to collect myself.",
+			  "Wish I knew what was really wrong down there, though.",
+			  "In my heart.",
+			  "...",
+			  "Ok, let's go.",
+			  "Thanks for stopping."
+          ]     
+        }
+      ]
+    },
+	{
+      "id": "bad",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "That's fair...",
+			  "It's a dangerous world out here.",
+			  "When you get a chance, though, let me know, yeah?"
+          ]     
+        }
+      ]
+    }
+
+  ]
+}

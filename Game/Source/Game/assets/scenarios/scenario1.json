@@ -1,0 +1,60 @@
+{
+  "assets": [],
+  "characters": [],
+  "conversations": [
+    {
+      "id": "intro",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "You ever kill someone?",
+              "You ever kill someone?"
+          ]
+        }
+      ],
+      "options": [
+      {
+        "text": "yes",
+        "link": "bad"
+      },
+      {
+        "text": "no",
+        "link": "good"
+      }
+      ]
+    },
+    {
+      "id": "bad",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "It's not your fault, yeah?",
+			  "I mean, you did it, but...",
+			  "It's them or you out here these days.",
+			  "Don't feel too bad or it'll eat you up.",
+			  "Of course, don't feel too good, either."
+          ]     
+        }
+      ]
+    },
+	{
+      "id": "good",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "Well, you're doing better than most.",
+			  "...",
+			  "It's a living, yeah?",
+			  "I'm not a sadist or anything.",
+			  "Being out here changes most people.",
+			  "If you're not careful it'll change you, too."
+          ]     
+        }
+      ]
+    }
+
+  ]
+}

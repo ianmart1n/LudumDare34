@@ -9,6 +9,11 @@
       "id": "PASSENGER",
       "type": "texture",
       "src": "PASSENGER.png"
+    },
+    {
+      "id": "BUS",
+      "type": "texture",
+      "src": "bus.png"
     }
   ]
 }

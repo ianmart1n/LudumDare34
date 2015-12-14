@@ -46,6 +46,8 @@
 #include <Box2DWorld.h>
 #include <Box2DDebugDrawer.h>
 
+#include <UIEvent.h>
+
 #include <RenderOptions.h>
 
 MY_Scene::MY_Scene(Game * _game) :
@@ -101,13 +103,19 @@ MY_Scene::MY_Scene(Game * _game) :
 
 	MeshEntity* bus = new MeshEntity(Resource::loadMeshFromObj("assets/bus.obj").at(0), baseShader);
 	childTransform->addChild(bus);
-	bus->mesh->pushTexture2D(MY_ResourceManager::scenario->getTexture("DEFAULT")->texture);
+	bus->mesh->pushTexture2D(MY_ResourceManager::scenario->getTexture("BUS")->texture);
 
 	MeshEntity* passenger = new MeshEntity(MeshFactory::getPlaneMesh(8), baseShader);
 	childTransform->addChild(passenger);
 	passenger->mesh->pushTexture2D(MY_ResourceManager::scenario->getTexture("PASSENGER")->texture);
 	passenger->childTransform->translate(-9.5,4.4f,7.1f);
 	passenger->childTransform->rotate(90, 0, 1, 0, kWORLD);
+
+	uiEvent = new UIEvent(uiLayer.world, textShader);
+	uiLayer.addChild(uiEvent);
+	uiEvent->setVisible(true);
+
+	uiEvent->startEvent(MY_ResourceManager::events.at(0));
 }
 
 MY_Scene::~MY_Scene(){

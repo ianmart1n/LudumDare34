@@ -7,4 +7,6 @@ class MY_ResourceManager : public ResourceManager{
 public:
 	static Scenario * scenario;
 	static void init();
+	
+	static std::vector<Scenario*> events;
 };

@@ -2,6 +2,7 @@
 
 #include <Scene.h>
 #include <UILayer.h>
+#include <UIEvent.h>
 #include <BulletDebugDrawer.h>
 #include <BulletWorld.h>
 
@@ -47,6 +48,8 @@ public:
 
 	Box2DWorld * box2dWorld;
 	Box2DDebugDrawer * box2dDebug;
+
+	UIEvent * uiEvent;
 
 	virtual void update(Step * _step) override;
 	virtual void render(sweet::MatrixStack * _matrixStack, RenderOptions * _renderOptions) override;

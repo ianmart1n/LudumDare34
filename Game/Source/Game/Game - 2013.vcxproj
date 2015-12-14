@@ -15,11 +15,13 @@
     <ClCompile Include="src\MY_Game.cpp" />
     <ClCompile Include="src\MY_ResourceManager.cpp" />
     <ClCompile Include="src\MY_Scene.cpp" />
+    <ClCompile Include="src\UIEvent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\MY_Game.h" />
     <ClInclude Include="include\MY_ResourceManager.h" />
     <ClInclude Include="include\MY_Scene.h" />
+    <ClInclude Include="include\UIEvent.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
