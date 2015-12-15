@@ -1,11 +1,6 @@
 {
   "assets": [
     {
-      "id": "CURSOR",
-      "type": "texture",
-      "src": "../engine basics/cursor.png"
-    },
-    {
       "id": "PASSENGER",
       "type": "texture",
       "src": "PASSENGER.png"
@@ -14,11 +9,6 @@
       "id": "BUS",
       "type": "texture",
       "src": "bus.png"
-    },
-    {
-      "id": "STARMAP",
-      "type": "texture",
-      "src": "stars.png"
     },
     {
         "id": "FONT",
