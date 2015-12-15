@@ -9,27 +9,13 @@
 #include <MeshFactory.h>
 #include <Resource.h>
 
-#include <DirectionalLight.h>
-#include <PointLight.h>
-#include <SpotLight.h>
-
 #include <shader\ComponentShaderBase.h>
 #include <shader\ComponentShaderText.h>
 #include <shader\ShaderComponentText.h>
 #include <shader\ShaderComponentTexture.h>
-#include <shader\ShaderComponentDiffuse.h>
-#include <shader\ShaderComponentHsv.h>
 #include <shader\ShaderComponentMVP.h>
 
-#include <shader\ShaderComponentIndexedTexture.h>
-#include <TextureColourTable.h>
-
-#include <Box2DWorld.h>
-#include <Box2DMeshEntity.h>
-#include <Box2DDebugDrawer.h>
-
 #include <MousePerspectiveCamera.h>
-#include <FollowCamera.h>
 
 #include <System.h>
 #include <Mouse.h>
@@ -40,11 +26,7 @@
 #include <StandardFrameBuffer.h>
 #include <NumberUtils.h>
 
-#include <NodeBulletBody.h>
-#include <BulletMeshEntity.h>
 #include <TextArea.h>
-#include <Box2DWorld.h>
-#include <Box2DDebugDrawer.h>
 #include <Easing.h>
 
 #include <UIEvent.h>
@@ -57,52 +39,36 @@ MY_Scene::MY_Scene(Game * _game) :
 	screenSurface(new RenderSurface(screenSurfaceShader)),
 	screenFBO(new StandardFrameBuffer(true)),
 	baseShader(new ComponentShaderBase(true)),
-	characterShader(new ComponentShaderBase(true)),
 	textShader(new ComponentShaderText(true)),
-	debugDrawer(nullptr),
 	uiLayer(0,0,0,0),
-	box2dWorld(new Box2DWorld(b2Vec2(0.f, -10.0f))),
-	box2dDebug(new Box2DDebugDrawer(box2dWorld)),
 	fadeOutLength(5),
 	fadeOutStart(-1)
 {
-	hsv = new ShaderComponentHsv(baseShader, 0, 1, 1);
 	baseShader->addComponent(new ShaderComponentMVP(baseShader));
-	//baseShader->addComponent(new ShaderComponentDiffuse(baseShader));
 	baseShader->addComponent(new ShaderComponentTexture(baseShader));
-	baseShader->addComponent(hsv);
 	baseShader->compileShader();
 
 	textShader->textComponent->setColor(glm::vec3(0.0f, 0.0f, 0.0f));
-	//screenSurface->unload();
-	//screenSurface->load();
 
 	// remove initial camera
-	//childTransform->removeChild(cameras.at(0)->parents.at(0));
-	//delete cameras.at(0)->parents.at(0);
-	//cameras.pop_back();
+	childTransform->removeChild(cameras.at(0)->parents.at(0));
+	delete cameras.at(0)->parents.at(0);
+	cameras.pop_back();
 
 	//Set up debug camera
-	debugCam = new MousePerspectiveCamera();
-	cameras.push_back(debugCam);
-	childTransform->addChild(debugCam);
-	debugCam->farClip = 1000.f;
-	debugCam->childTransform->rotate(90, 0, 1, 0, kWORLD);
-	debugCam->parents.at(0)->translate(1.475f, 9.508f, 4.506f);
-	debugCam->yaw = -90.0f;
-	debugCam->pitch = -10.0f;
-	debugCam->speed = 1;
+	playerCam = new MousePerspectiveCamera();
+	cameras.push_back(playerCam);
+	childTransform->addChild(playerCam);
+	playerCam->farClip = 1000.f;
+	playerCam->childTransform->rotate(90, 0, 1, 0, kWORLD);
+	playerCam->parents.at(0)->translate(1.475f, 9.508f, 4.506f);
+	playerCam->yaw = -90.0f;
+	playerCam->pitch = -10.0f;
+	playerCam->speed = 1;
 
-	debugCam->interpolation = 1;
+	playerCam->interpolation = 1;
 
-	activeCamera = debugCam;
-
-	childTransform->addChild(box2dDebug, false);
-	box2dDebug->drawing = true;
-	box2dWorld->b2world->SetDebugDraw(box2dDebug);
-	box2dDebug->AppendFlags(b2Draw::e_shapeBit);
-	box2dDebug->AppendFlags(b2Draw::e_centerOfMassBit);
-	box2dDebug->AppendFlags(b2Draw::e_jointBit);
+	activeCamera = playerCam;
 
 	//uiLayer.addMouseIndicator();
 
@@ -159,17 +125,26 @@ void MY_Scene::getNextEvent(){
 			MY_ResourceManager::eventUsed.at(i) = true;
 		}
 	}
+
+	
+	// reference counting for member variables
+	++baseShader->referenceCount;
+	++textShader->referenceCount;
+
+	++screenSurface->referenceCount;
+	++screenSurfaceShader->referenceCount;
+	++screenFBO->referenceCount;
 }
 
 MY_Scene::~MY_Scene(){
 	deleteChildTransform();
-	baseShader->safeDelete();
-	characterShader->safeDelete();
-	textShader->safeDelete();
+	// auto-delete member variables
+	baseShader->decrementAndDelete();
+	textShader->decrementAndDelete();
 
-	screenSurface->safeDelete();
-	//screenSurfaceShader->safeDelete();
-	screenFBO->safeDelete();
+	screenSurface->decrementAndDelete();
+	screenSurfaceShader->decrementAndDelete();
+	screenFBO->decrementAndDelete();
 }
 
 
@@ -191,8 +166,6 @@ void MY_Scene::update(Step * _step){
 		}
 	}
 
-	box2dWorld->update(_step);
-
 	
 
 	// event timer stuff
@@ -205,18 +178,11 @@ void MY_Scene::update(Step * _step){
 		}
 	}
 
-
-	if(keyboard->keyJustDown(GLFW_KEY_F12)){
-		game->toggleFullScreen();
-	}
-
-	if (keyboard->keyJustDown(GLFW_KEY_1)){
-		cycleCamera();
-	}
-
+#ifdef _DEBUG
 	if (keyboard->keyJustDown(GLFW_KEY_2)){
 		Transform::drawTransforms = !Transform::drawTransforms;
 	}
+#endif
 
 	glm::uvec2 sd = sweet::getScreenDimensions();
 	uiLayer.resize(0, sd.x, 0, sd.y);
