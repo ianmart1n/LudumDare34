@@ -113,9 +113,45 @@ MY_Scene::MY_Scene(Game * _game) :
 
 	uiEvent = new UIEvent(uiLayer.world, textShader);
 	uiLayer.addChild(uiEvent);
-	uiEvent->setVisible(true);
 
-	uiEvent->startEvent(MY_ResourceManager::events.at(0));
+
+	lastEventTime = 0;
+	nextEventTime = 10;
+	gameover = false;
+	getNextEvent();
+
+	MY_ResourceManager::endScenario->eventManager.addEventListener("gameover", [this](sweet::Event * _event){
+		gameover = true;
+	});
+}
+
+void MY_Scene::getNextEvent(){
+	if (!gameover){
+		//check if there are events left
+		bool done = true;
+		for (bool b : MY_ResourceManager::eventUsed){
+			if (!b){
+				done = false;
+				break;
+			}
+		}
+
+		lastEventTime = glfwGetTime();
+		nextEventTime = lastEventTime + sweet::NumberUtils::randomInt(10, 30);
+	
+		if (done){
+			// there aren't any more scenarios, so just load the ending
+			eventToUse = MY_ResourceManager::endScenario;
+		} else{
+			// find an unused event
+			unsigned long int i = 0;
+			do{
+				i = sweet::NumberUtils::randomInt(0, MY_ResourceManager::events.size()-1);
+			} while (MY_ResourceManager::eventUsed.at(i));
+			eventToUse = MY_ResourceManager::events.at(i);
+			MY_ResourceManager::eventUsed.at(i) = true;
+		}
+	}
 }
 
 MY_Scene::~MY_Scene(){
@@ -131,10 +167,25 @@ MY_Scene::~MY_Scene(){
 
 
 void MY_Scene::update(Step * _step){
+	if (!gameover){
+		MY_ResourceManager::endScenario->eventManager.update(_step);
+	}
 
 	box2dWorld->update(_step);
 
 	
+
+	// event timer stuff
+	if (_step->time > nextEventTime){
+		if (uiEvent->readyForNewEvent){
+			uiEvent->startEvent(eventToUse);
+		}
+		else{
+			getNextEvent();
+		}
+	}
+
+
 	if(keyboard->keyJustDown(GLFW_KEY_F12)){
 		game->toggleFullScreen();
 	}
@@ -147,7 +198,7 @@ void MY_Scene::update(Step * _step){
 		Transform::drawTransforms = !Transform::drawTransforms;
 	}
 
-	float speed = 1;
+	/*float speed = 1;
 	MousePerspectiveCamera * cam = dynamic_cast<MousePerspectiveCamera *>(activeCamera);
 	if(cam != nullptr){
 		speed = cam->speed;
@@ -164,9 +215,7 @@ void MY_Scene::update(Step * _step){
 	}
 	if (keyboard->keyDown(GLFW_KEY_RIGHT)){
 		activeCamera->parents.at(0)->translate((activeCamera->rightVectorRotated) * speed);
-	}
-
-	debugCam->update(_step);
+	}*/
 
 	glm::uvec2 sd = sweet::getScreenDimensions();
 	uiLayer.resize(0, sd.x, 0, sd.y);

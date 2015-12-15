@@ -1,0 +1,23 @@
+{
+  "assets": [],
+  "characters": [],
+  "conversations": [
+    {
+      "id": "intro",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "GAMEOVER"
+          ],
+          "triggers": [
+              {
+                  "type":  "gameover",
+                  "args": {}
+              }
+          ]
+        }
+      ]
+    }
+  ]
+}

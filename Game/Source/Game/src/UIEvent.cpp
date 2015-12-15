@@ -12,7 +12,8 @@ text(new TextArea(_world, MY_ResourceManager::scenario->getFont("HURLY-BURLY")->
 optionOne(new TextArea(_world, MY_ResourceManager::scenario->getFont("HURLY-BURLY")->font, _textShader, 300)),
 optionTwo(new TextArea(_world, MY_ResourceManager::scenario->getFont("HURLY-BURLY")->font, _textShader, 300)),
 buttonsLayout(new HorizontalLinearLayout(_world)),
-currentEvent(nullptr)
+currentEvent(nullptr),
+readyForNewEvent(true)
 {
 	setRenderMode(kTEXTURE);
 
@@ -64,10 +65,8 @@ currentEvent(nullptr)
 UIEvent::~UIEvent(){}
 
 void UIEvent::update(Step * _step) {
-	VerticalLinearLayout::update(_step);
-
+	if (isVisible()){
 	Keyboard& keyboard = Keyboard::getInstance();
-
 	if (waitingForInput) {
 		if (keyboard.keyJustDown(GLFW_KEY_LEFT)) {
 			select(0);
@@ -76,11 +75,20 @@ void UIEvent::update(Step * _step) {
 		if (keyboard.keyJustDown(GLFW_KEY_RIGHT)) {
 			select(1);
 		}
-	} else {
+	}
+	else {
 		if (keyboard.keyJustDown(GLFW_KEY_RIGHT) || keyboard.keyJustDown(GLFW_KEY_LEFT)) {
-			this->sayNext();
+			if (!this->sayNext()){
+				end();
+				setVisible(false);
+				readyForNewEvent = true;
+			}
 		}
 	}
+	}
+
+	VerticalLinearLayout::update(_step);
+
 }
 
 void UIEvent::startEvent(Scenario * _scenario){
@@ -91,6 +99,7 @@ void UIEvent::startEvent(Scenario * _scenario){
 	currentConversation = _scenario->conversations["intro"];
 	currentConversation->reset();
 	sayNext();
+	readyForNewEvent = false;
 }
 
 bool UIEvent::sayNext(){

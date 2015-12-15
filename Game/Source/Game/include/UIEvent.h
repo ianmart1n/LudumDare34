@@ -9,6 +9,7 @@ public:
 	TextArea * optionOne;
 	TextArea * optionTwo;
 	HorizontalLinearLayout * buttonsLayout;
+	bool readyForNewEvent;
 
 	UIEvent(BulletWorld * _world, Shader * _textShader);
 	~UIEvent();

@@ -14,6 +14,11 @@
       "id": "BUS",
       "type": "texture",
       "src": "bus.png"
+    },
+    {
+      "id": "STARMAP",
+      "type": "texture",
+      "src": "stars.png"
     }
   ]
 }
