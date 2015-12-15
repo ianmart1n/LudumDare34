@@ -8,9 +8,9 @@
 
 UIEvent::UIEvent(BulletWorld * _world, Shader * _textShader) :
 VerticalLinearLayout(_world),
-text(new TextArea(_world, MY_ResourceManager::scenario->getFont("HURLY-BURLY")->font, _textShader, 1.f)),
-optionOne(new TextArea(_world, MY_ResourceManager::scenario->getFont("HURLY-BURLY")->font, _textShader, 300)),
-optionTwo(new TextArea(_world, MY_ResourceManager::scenario->getFont("HURLY-BURLY")->font, _textShader, 300)),
+text(new TextArea(_world, MY_ResourceManager::scenario->getFont("FONT")->font, _textShader, 1.f)),
+optionOne(new TextArea(_world, MY_ResourceManager::scenario->getFont("FONT")->font, _textShader, 300)),
+optionTwo(new TextArea(_world, MY_ResourceManager::scenario->getFont("FONT")->font, _textShader, 300)),
 buttonsLayout(new HorizontalLinearLayout(_world)),
 currentEvent(nullptr),
 readyForNewEvent(true)
@@ -37,27 +37,16 @@ readyForNewEvent(true)
 	buttonsLayout->addChild(optionTwo);
 
 	text->setWidth(600);
-	text->setHeight(MY_ResourceManager::scenario->getFont("HURLY-BURLY")->font->getLineHeight() * 2);
-	//text->setHeight(0.4f);
+	text->setHeight(MY_ResourceManager::scenario->getFont("FONT")->font->getLineHeight() * 5);
 	text->setText(L"Bacon ipsum dolor amet anim occaecat pork loin.");
 	text->verticalAlignment = kTOP;
 	text->setWrapMode(kWORD);
 
-	/*nextButton->eventManager.addEventListener("click", [this](sweet::Event * _event){
-		if (!this->sayNext()){
-			// prevent the user from clicking buttons while they're not visible
-			nextButton->setMouseEnabled(false);
-			optionOne->setMouseEnabled(false);
-			optionTwo->setMouseEnabled(false);
-			setVisible(false);
-		}
-	});
-	optionOne->eventManager.addEventListener("click", [this](sweet::Event * _event){
-		select(0);
-	});
-	optionTwo->eventManager.addEventListener("click", [this](sweet::Event * _event){
-		select(1);
-	});*/
+	text->background->setVisible(true);
+	text->setBackgroundColour(1, 1, 1, 0.75f);
+
+	buttonsLayout->background->setVisible(true);
+	buttonsLayout->setBackgroundColour(1, 1, 1, 0.75f);
 
 	setVisible(false);
 }
@@ -68,16 +57,16 @@ void UIEvent::update(Step * _step) {
 	if (isVisible()){
 	Keyboard& keyboard = Keyboard::getInstance();
 	if (waitingForInput) {
-		if (keyboard.keyJustDown(GLFW_KEY_LEFT)) {
+		if (keyboard.keyJustDown(GLFW_KEY_LEFT) || keyboard.keyJustDown(GLFW_KEY_A)) {
 			select(0);
 		}
 
-		if (keyboard.keyJustDown(GLFW_KEY_RIGHT)) {
+		if (keyboard.keyJustDown(GLFW_KEY_RIGHT) || keyboard.keyJustDown(GLFW_KEY_D)) {
 			select(1);
 		}
 	}
 	else {
-		if (keyboard.keyJustDown(GLFW_KEY_RIGHT) || keyboard.keyJustDown(GLFW_KEY_LEFT)) {
+		if (keyboard.keyJustDown(GLFW_KEY_RIGHT) || keyboard.keyJustDown(GLFW_KEY_LEFT) || keyboard.keyJustDown(GLFW_KEY_A) || keyboard.keyJustDown(GLFW_KEY_D)) {
 			if (!this->sayNext()){
 				end();
 				setVisible(false);
@@ -92,7 +81,6 @@ void UIEvent::update(Step * _step) {
 }
 
 void UIEvent::startEvent(Scenario * _scenario){
-	MY_ResourceManager::scenario->getAudio("EVENT_OPEN")->sound->play();
 	currentEvent = _scenario;
 	setVisible(true);
 

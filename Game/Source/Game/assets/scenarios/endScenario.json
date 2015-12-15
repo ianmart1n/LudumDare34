@@ -8,7 +8,9 @@
         {
           "speaker": "Jag",
           "text": [
-              "GAMEOVER"
+              "Ok. This is my stop.",
+              "Thanks for the ride.",
+              "So long."
           ],
           "triggers": [
               {

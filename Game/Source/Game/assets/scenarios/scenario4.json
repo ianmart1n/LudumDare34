@@ -1,0 +1,57 @@
+{
+  "assets": [],
+  "characters": [],
+  "conversations": [
+    {
+      "id": "intro",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "Did you catch the stash game while you were in town?"
+          ]
+        }
+      ],
+      "options": [
+      {
+        "text": "yes",
+        "link": "cool"
+      },
+      {
+        "text": "no",
+        "link": "lame"
+      }
+      ]
+    },
+    {
+      "id": "cool",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "Man, Hardy was really having a go out there, wasn't he?",
+              "Pretends he's coming slow off the injury and then goes for broke.",
+              "Last week's match was boring without him."
+
+          ]     
+        }
+      ]
+    },
+	{
+      "id": "lame",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "I think it's funny that people have the time or energy for it.",
+              "Don't get me wrong, I love to watch it.",
+              "But actually playing games just seems too... frivolous.",
+              "But man, what a match! You shoulda seen it.",
+              "Hardy laid waste to the other team practically single-handedly."
+          ]     
+        }
+      ]
+    }
+
+  ]
+}

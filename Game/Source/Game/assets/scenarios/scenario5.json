@@ -1,0 +1,18 @@
+{
+  "assets": [],
+  "characters": [],
+  "conversations": [
+    {
+      "id": "intro",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "Sorry about the smell.",
+              "He's going a bit rotten, I think."
+          ]
+        }
+      ]
+    }
+  ]
+}

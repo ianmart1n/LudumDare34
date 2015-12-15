@@ -8,7 +8,7 @@ std::vector<Scenario*> MY_ResourceManager::events;
 std::vector<bool> MY_ResourceManager::eventUsed;
 
 void MY_ResourceManager::init(){
-	for (int i = 1; i < 3; i++) {
+	for (int i = 1; i < 7; i++) {
 		std::stringstream ss;
 		ss << "assets/scenarios/scenario" << i << ".json";
 

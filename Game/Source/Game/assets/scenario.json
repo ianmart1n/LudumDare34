@@ -19,6 +19,16 @@
       "id": "STARMAP",
       "type": "texture",
       "src": "stars.png"
+    },
+    {
+        "id": "FONT",
+        "type":  "font",
+        "src":  "LeagueSpartan-Bold.otf"
+    },
+    {
+        "id": "BGM",
+        "type":  "audio",
+        "src":  "suave.ogg"
     }
   ]
 }

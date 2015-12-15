@@ -36,6 +36,7 @@ public:
 	ComponentShaderBase * baseShader;
 	ComponentShaderBase * characterShader;
 	ComponentShaderText * textShader;
+	ShaderComponentHsv * hsv;
 
 	BulletWorld * bulletWorld;
 	BulletDebugDrawer * debugDrawer;
@@ -55,6 +56,9 @@ public:
 	float nextEventTime;
 	Scenario * eventToUse;
 	bool gameover;
+
+	float fadeOutStart;
+	float fadeOutLength;
 
 	virtual void update(Step * _step) override;
 	virtual void render(sweet::MatrixStack * _matrixStack, RenderOptions * _renderOptions) override;

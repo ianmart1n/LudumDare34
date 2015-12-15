@@ -1,0 +1,59 @@
+{
+    "assets": [],
+    "characters": [],
+    "conversations": [
+        {
+            "id": "intro",
+            "dialogue": [
+                {
+                    "speaker": "Jag",
+                    "text": [
+                        "I met a girl, Maz.",
+                        "She was barely 17. Worked for a research lab.",
+                        "She told me that what I did tonight doomed us all.",
+                        "You think that's true?"
+                    ]
+                }
+            ],
+            "options": [
+                {
+                    "text": "yes",
+                    "link": "doom"
+                },
+                {
+                    "text": "no",
+                    "link": "nice"
+                }
+            ]
+        },
+        {
+            "id": "doom",
+            "dialogue": [
+                {
+                    "speaker": "Jag",
+                    "text": [
+                        "I think so, too."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "nice",
+            "dialogue": [
+                {
+                    "speaker": "Jag",
+                    "text": [
+                        "I think we've got just as much chance now as we ever did.",
+                        "Not like anyone lasts long out here these days.",
+                        "Whole world went to shit a long time ago.",
+                        "We were already doomed.",
+                        "We're just more resilient than most.",
+                        "Something was bound to go wrong for him anyway.",
+                        "He couldn't have saved us.",
+                        "I doubt anyone really can."
+                    ]
+                }
+            ]
+        }
+    ]
+}

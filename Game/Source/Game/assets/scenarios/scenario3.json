@@ -1,0 +1,97 @@
+{
+  "assets": [],
+  "characters": [],
+  "conversations": [
+    {
+      "id": "intro",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "You ever been in love?"
+          ]
+        }
+      ],
+      "options": [
+      {
+        "text": "yes",
+        "link": "love"
+      },
+      {
+        "text": "no",
+        "link": "none"
+      }
+      ]
+    },
+    {
+      "id": "love",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "I think I was.",
+              "I found out a few days ago that he died.",
+              "Raiders shot him to shit.",
+              "I don't really feel anything.",
+              "We hadn't spoken for a few months.",
+              "I guess we won't speak for many more.",
+              "Just feels like he's still somewhere out there, ignoring me.",
+              "Did you like being in love?"
+          ]     
+        }
+      ],
+      "options": [
+      {
+        "text": "yes",
+        "link": "love2"
+      },
+      {
+        "text": "no",
+        "link": "love3"
+      }
+      ]
+    },
+    {
+      "id": "love2",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "I wish it were that clear for me."
+          ]     
+        }
+      ]
+    },
+    {
+      "id": "love3",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "It's like a disease.",
+              "You go for a long time thinking it's normal.",
+              "Like this is how life is.",
+              "It's a gradual waking up.",
+              "One day you think that maybe you deserve better.",
+              "I still don't know what's better than love, though.",
+              "Maybe nothing."
+          ]     
+        }
+      ]
+    },
+	{
+      "id": "none",
+      "dialogue": [
+        {
+          "speaker": "Jag",
+          "text": [
+              "I'm not convinced it's worth it, if that helps.",
+              "Maybe it doesn't.",
+              "Sorry."
+          ]     
+        }
+      ]
+    }
+
+  ]
+}

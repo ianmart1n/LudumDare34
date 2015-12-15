@@ -45,6 +45,7 @@
 #include <TextArea.h>
 #include <Box2DWorld.h>
 #include <Box2DDebugDrawer.h>
+#include <Easing.h>
 
 #include <UIEvent.h>
 
@@ -61,11 +62,15 @@ MY_Scene::MY_Scene(Game * _game) :
 	debugDrawer(nullptr),
 	uiLayer(0,0,0,0),
 	box2dWorld(new Box2DWorld(b2Vec2(0.f, -10.0f))),
-	box2dDebug(new Box2DDebugDrawer(box2dWorld))
+	box2dDebug(new Box2DDebugDrawer(box2dWorld)),
+	fadeOutLength(5),
+	fadeOutStart(-1)
 {
+	hsv = new ShaderComponentHsv(baseShader, 0, 1, 1);
 	baseShader->addComponent(new ShaderComponentMVP(baseShader));
 	//baseShader->addComponent(new ShaderComponentDiffuse(baseShader));
 	baseShader->addComponent(new ShaderComponentTexture(baseShader));
+	baseShader->addComponent(hsv);
 	baseShader->compileShader();
 
 	textShader->textComponent->setColor(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -99,7 +104,7 @@ MY_Scene::MY_Scene(Game * _game) :
 	box2dDebug->AppendFlags(b2Draw::e_centerOfMassBit);
 	box2dDebug->AppendFlags(b2Draw::e_jointBit);
 
-	uiLayer.addMouseIndicator();
+	//uiLayer.addMouseIndicator();
 
 	MeshEntity* bus = new MeshEntity(Resource::loadMeshFromObj("assets/bus.obj").at(0), baseShader);
 	childTransform->addChild(bus);
@@ -123,6 +128,8 @@ MY_Scene::MY_Scene(Game * _game) :
 	MY_ResourceManager::endScenario->eventManager.addEventListener("gameover", [this](sweet::Event * _event){
 		gameover = true;
 	});
+
+	MY_ResourceManager::scenario->getAudio("BGM")->sound->play(true);
 }
 
 void MY_Scene::getNextEvent(){
@@ -137,7 +144,7 @@ void MY_Scene::getNextEvent(){
 		}
 
 		lastEventTime = glfwGetTime();
-		nextEventTime = lastEventTime + sweet::NumberUtils::randomInt(10, 30);
+		nextEventTime = lastEventTime + sweet::NumberUtils::randomInt(12, 22);
 	
 		if (done){
 			// there aren't any more scenarios, so just load the ending
@@ -167,8 +174,21 @@ MY_Scene::~MY_Scene(){
 
 
 void MY_Scene::update(Step * _step){
+	if (keyboard->keyJustDown(GLFW_KEY_ESCAPE)){
+		game->exit();
+	}
+
+
 	if (!gameover){
 		MY_ResourceManager::endScenario->eventManager.update(_step);
+	}
+	else{
+		if (fadeOutStart < -1){
+			fadeOutStart = _step->time;
+		}
+		else if(_step->time > fadeOutStart + fadeOutLength){
+			game->exit();
+		}
 	}
 
 	box2dWorld->update(_step);
@@ -197,25 +217,6 @@ void MY_Scene::update(Step * _step){
 	if (keyboard->keyJustDown(GLFW_KEY_2)){
 		Transform::drawTransforms = !Transform::drawTransforms;
 	}
-
-	/*float speed = 1;
-	MousePerspectiveCamera * cam = dynamic_cast<MousePerspectiveCamera *>(activeCamera);
-	if(cam != nullptr){
-		speed = cam->speed;
-	}
-	// camera controls
-	if (keyboard->keyDown(GLFW_KEY_UP)){
-		activeCamera->parents.at(0)->translate((activeCamera->forwardVectorRotated) * speed);
-	}
-	if (keyboard->keyDown(GLFW_KEY_DOWN)){
-		activeCamera->parents.at(0)->translate((activeCamera->forwardVectorRotated) * -speed);
-	}
-	if (keyboard->keyDown(GLFW_KEY_LEFT)){
-		activeCamera->parents.at(0)->translate((activeCamera->rightVectorRotated) * -speed);
-	}
-	if (keyboard->keyDown(GLFW_KEY_RIGHT)){
-		activeCamera->parents.at(0)->translate((activeCamera->rightVectorRotated) * speed);
-	}*/
 
 	glm::uvec2 sd = sweet::getScreenDimensions();
 	uiLayer.resize(0, sd.x, 0, sd.y);
